@@ -21,15 +21,15 @@ export function Navbar({ links }: NavbarProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 lg:px-8">
-        <a href="#hero" className="font-semibold tracking-tight text-ink">
+    <header className="sticky top-0 z-50 bg-background/85 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 lg:px-8">
+        <a href="#hero" className="font-serif text-lg font-semibold tracking-tight text-ink">
           Htet Lin Lin Naing
         </a>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-6 md:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-7 md:flex">
           {links.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm text-muted transition hover:text-accent">
+            <a key={link.href} href={link.href} className="text-xs font-semibold uppercase tracking-[0.14em] text-muted transition hover:text-accent">
               {link.label}
             </a>
           ))}

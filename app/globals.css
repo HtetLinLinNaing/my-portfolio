@@ -4,7 +4,7 @@
 
 :root {
   --portfolio-accent: #4c78ca;
-  --portfolio-background: #f8fafc;
+  --portfolio-background: #f7f9fd;
   --portfolio-surface: #ffffff;
   --portfolio-text: #172033;
   --portfolio-muted: #5a6780;
@@ -36,6 +36,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+h1,
+h2,
+h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
 :where(.dark) {
   --portfolio-background: #0a0f1c;
   --portfolio-surface: #111a2b;
@@ -51,6 +57,16 @@ body {
 
 section {
   scroll-margin-top: 6rem;
+}
+
+.portfolio-wave {
+  position: absolute;
+  right: -12%;
+  bottom: -5.5rem;
+  left: -12%;
+  height: 10rem;
+  border-radius: 50% 50% 0 0 / 75% 75% 0 0;
+  background: var(--portfolio-accent);
 }
 
 @media (prefers-color-scheme: dark) {
