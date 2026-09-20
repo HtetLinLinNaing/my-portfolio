@@ -3,11 +3,21 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-accent: #4c78ca;
+  --portfolio-accent: #4c78ca;
+  --portfolio-background: #f8fafc;
+  --portfolio-surface: #ffffff;
+  --portfolio-text: #172033;
+  --portfolio-muted: #5a6780;
+  --portfolio-border: #dce4f0;
 }
 
 @theme inline {
-  --color-accent: var(--color-accent);
+  --color-accent: var(--portfolio-accent);
+  --color-background: var(--portfolio-background);
+  --color-surface: var(--portfolio-surface);
+  --color-ink: var(--portfolio-text);
+  --color-muted: var(--portfolio-muted);
+  --color-border: var(--portfolio-border);
 }
 
 * {
@@ -21,15 +31,35 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: #f8fafc;
-  color: #172033;
+  background: var(--portfolio-background);
+  color: var(--portfolio-text);
   font-family: Arial, Helvetica, sans-serif;
 }
 
+:where(.dark) {
+  --portfolio-background: #0a0f1c;
+  --portfolio-surface: #111a2b;
+  --portfolio-text: #f8fafc;
+  --portfolio-muted: #aab7ce;
+  --portfolio-border: #263653;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+section {
+  scroll-margin-top: 6rem;
+}
+
 @media (prefers-color-scheme: dark) {
-  body {
-    background: #0a0f1c;
-    color: #f8fafc;
+  :root:not(.light) {
+    --portfolio-background: #0a0f1c;
+    --portfolio-surface: #111a2b;
+    --portfolio-text: #f8fafc;
+    --portfolio-muted: #aab7ce;
+    --portfolio-border: #263653;
   }
 }
 
