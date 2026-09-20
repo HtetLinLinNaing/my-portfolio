@@ -2,9 +2,8 @@ import type { Metadata } from 'next';
 import { Footer } from '@/components/layout/footer';
 import { Navbar } from '@/components/layout/navbar';
 import { ThemeProvider } from '@/components/theme/theme-provider';
+import { siteUrl } from '@/lib/site-config';
 import './globals.css';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
