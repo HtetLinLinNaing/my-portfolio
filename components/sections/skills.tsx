@@ -7,7 +7,7 @@ export function Skills() {
     <section id="skills" aria-labelledby="skills-title" className="bg-surface px-5 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-6xl space-y-12">
         <Reveal>
-          <SectionHeading eyebrow="Toolkit" title="Tools I use to turn ideas into products." />
+          <SectionHeading id="skills-title" eyebrow="Toolkit" title="Tools I use to turn ideas into products." />
         </Reveal>
         <div className="grid gap-5 md:grid-cols-2">
           {skillGroups.map((group, index) => (

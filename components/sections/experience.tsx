@@ -7,7 +7,7 @@ export function Experience() {
     <section id="experience" aria-labelledby="experience-title" className="px-5 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-6xl space-y-12">
         <Reveal>
-          <SectionHeading eyebrow="Experience" title="Practical experience from idea to production." />
+          <SectionHeading id="experience-title" eyebrow="Experience" title="Practical experience from idea to production." />
         </Reveal>
         <div className="space-y-6">
           {experience.map((entry, index) => (

@@ -6,7 +6,7 @@ export function About() {
     <section id="about" aria-labelledby="about-title" className="border-t border-border/70 px-5 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <Reveal>
-          <SectionHeading eyebrow="About me" title="Building across the full stack." />
+          <SectionHeading id="about-title" eyebrow="About me" title="Building across the full stack." />
         </Reveal>
         <Reveal delay={0.08} className="space-y-5 text-lg leading-8 text-muted">
           <p>

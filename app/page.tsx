@@ -1,6 +1,7 @@
 import { About } from '@/components/sections/about';
 import { Experience } from '@/components/sections/experience';
 import { Hero } from '@/components/sections/hero';
+import { Projects } from '@/components/sections/projects';
 import { Skills } from '@/components/sections/skills';
 
 export default function HomePage() {
@@ -10,9 +11,7 @@ export default function HomePage() {
       <About />
       <Skills />
       <Experience />
-      <section id="projects" aria-labelledby="projects-title">
-        <h2 id="projects-title">Projects</h2>
-      </section>
+      <Projects />
       <section id="contact" aria-labelledby="contact-title">
         <h2 id="contact-title">Contact</h2>
       </section>
