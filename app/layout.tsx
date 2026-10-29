@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     description:
       'Htet Lin Lin Naing, Full Stack Developer with 4+ years of production experience, OpenAI API project integration, and current learning in agentic workflows and Python.',
     type: 'website',
+    images: [{
+      url: '/images/portfolio-preview.png',
+      width: 1667,
+      height: 745,
+      alt: 'Htet Lin Lin Naing — Full-Stack Software Engineer portfolio',
+    }],
   },
 };
 
