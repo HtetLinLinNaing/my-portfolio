@@ -38,7 +38,7 @@ describe('portfolio content sections', () => {
     expect(screen.getByText('Galaxy Wave')).toBeInTheDocument();
     expect(screen.getByText('Kopwar')).toBeInTheDocument();
     expect(decodeURIComponent(screen.getByRole('img', { name: 'Galaxy Wave logo' }).getAttribute('src')!)).toContain('/images/gw_logo-transparent.png');
-    expect(decodeURIComponent(screen.getByRole('img', { name: 'Kopwar logo' }).getAttribute('src')!)).toContain('/images/pw_logo.jfif');
+    expect(decodeURIComponent(screen.getByRole('img', { name: 'Kopwar logo' }).getAttribute('src')!)).toContain('/images/pw_logo.jpg');
     expect(screen.getAllByText('React').length).toBeGreaterThan(0);
     expect(screen.getByRole('img', { name: /Htet Lin Lin Naing/i })).toBeInTheDocument();
     expect(decodeURIComponent(screen.getByRole('img', { name: 'Htet Lin Lin Naing' }).getAttribute('src')!)).toContain('/images/profile-cutout-v1.png');
