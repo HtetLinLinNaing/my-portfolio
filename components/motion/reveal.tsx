@@ -7,19 +7,22 @@ import { cn } from '@/lib/utils';
 interface RevealProps {
   children: ReactNode;
   delay?: number;
+  duration?: number;
+  distance?: number;
+  amount?: number;
   className?: string;
 }
 
-export function Reveal({ children, delay = 0, className }: RevealProps) {
+export function Reveal({ children, delay = 0, duration = 0.55, distance = 24, amount = 0.2, className }: RevealProps) {
   const reducedMotion = useReducedMotion();
 
   return (
     <motion.div
-      className={cn(className)}
-      initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+      className={cn('portfolio-reveal', className)}
+      initial={reducedMotion ? false : { opacity: 0, y: distance }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.55, delay, ease: 'easeOut' }}
+      viewport={{ once: true, amount }}
+      transition={{ duration, delay, ease: 'easeOut' }}
     >
       {children}
     </motion.div>

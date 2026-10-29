@@ -12,4 +12,10 @@ describe('portfolio page structure', () => {
 
     expect(screen.getByRole('heading', { name: /Htet Lin Lin Naing/i })).toBeInTheDocument();
   });
+
+  it('puts project evidence before the toolkit and keeps the contact path last', () => {
+    render(<HomePage />);
+    expect(Array.from(document.querySelectorAll('main > section')).map((section) => section.id))
+      .toEqual(['hero', 'projects', 'experience', 'skills', 'about', 'contact']);
+  });
 });

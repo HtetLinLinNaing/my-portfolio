@@ -4,15 +4,17 @@ import { Experience } from '@/components/sections/experience';
 import { Hero } from '@/components/sections/hero';
 import { Projects } from '@/components/sections/projects';
 import { Skills } from '@/components/sections/skills';
+import { SocialRail } from '@/components/layout/social-rail';
 
 export default function HomePage() {
   return (
     <main className="min-h-screen">
+      <SocialRail />
       <Hero />
-      <About />
-      <Skills />
-      <Experience />
       <Projects />
+      <Experience />
+      <Skills />
+      <About />
       <Contact />
     </main>
   );

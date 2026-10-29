@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { ArrowUpRight, LoaderCircle } from 'lucide-react';
 import { contactSchema, type ContactFormValues } from '@/lib/contact-schema';
-import { sendContactMessage } from '@/lib/emailjs';
+import { ContactSendError, sendContactMessage } from '@/lib/emailjs';
+import { socials } from '@/data/socials';
 import { Button } from '@/components/ui/button';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
@@ -15,12 +17,32 @@ const initialValues: ContactFormValues = {
   message: '',
 };
 
+interface ContactField {
+  name: keyof ContactFormValues;
+  label: string;
+  placeholder: string;
+  type: 'text' | 'email' | 'textarea';
+  autoComplete?: string;
+}
+
+const contactFields: ContactField[] = [
+  { name: 'name', label: 'Name', placeholder: 'Your name', type: 'text', autoComplete: 'name' },
+  { name: 'email', label: 'Your email', placeholder: 'you@example.com', type: 'email', autoComplete: 'email' },
+  { name: 'subject', label: 'Subject', placeholder: 'What would you like to discuss?', type: 'text' },
+  { name: 'message', label: 'Message', placeholder: 'Tell me about the role or project…', type: 'textarea' },
+];
+
 export function ContactForm() {
   const [values, setValues] = useState<ContactFormValues>(initialValues);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<FormStatus>('idle');
+  const [sendError, setSendError] = useState<ContactSendError | null>(null);
+  const sending = useRef(false);
+  const linkedin = socials.find((social) => social.platform === 'LinkedIn');
 
   function updateValue(field: keyof ContactFormValues, value: string) {
+    if (status === 'submitting') return;
+    setSendError(null);
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
     if (status !== 'idle') {
@@ -29,6 +51,7 @@ export function ContactForm() {
   }
 
   async function submitForm() {
+    if (sending.current) return;
     const result = contactSchema.safeParse(values);
 
     if (!result.success) {
@@ -44,14 +67,21 @@ export function ContactForm() {
       return;
     }
 
+    sending.current = true;
     setErrors({});
+    setSendError(null);
     setStatus('submitting');
 
     try {
       await sendContactMessage(result.data);
       setStatus('success');
-    } catch {
+    } catch (error) {
+      const failure = error instanceof ContactSendError ? error : new ContactSendError('network', true);
+      setSendError(failure);
+      console.warn('Contact submission failed', { category: failure.category, status: failure.status });
       setStatus('error');
+    } finally {
+      sending.current = false;
     }
   }
 
@@ -67,61 +97,68 @@ export function ContactForm() {
       id: field,
       name: field,
       value: values[field],
+      disabled: status === 'submitting',
+      required: true,
       onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateValue(field, event.target.value),
       'aria-invalid': Boolean(errors[field]),
       'aria-describedby': errors[field] ? `${field}-error` : undefined,
       className:
-        'mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-ink outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/20',
+        'mt-1.5 w-full min-w-0 rounded-lg border border-border bg-background/70 px-3.5 py-2.5 text-base text-ink outline-none placeholder:text-muted hover:border-accent/50 focus:border-accent focus:bg-surface focus:ring-3 focus:ring-accent/15 aria-invalid:border-red-600 aria-invalid:focus:ring-red-600/15 motion-safe:transition-colors motion-safe:duration-200 disabled:cursor-wait disabled:opacity-70',
     };
   }
 
+  function renderField(field: ContactField) {
+    const props = fieldProps(field.name);
+    return (
+      <div key={field.name}>
+        <label htmlFor={field.name} className="text-sm font-semibold text-ink">{field.label}</label>
+        {field.type === 'textarea'
+          ? <textarea {...props} rows={4} placeholder={field.placeholder} className={`${props.className} min-h-32 resize-y`} />
+          : <input {...props} type={field.type} autoComplete={field.autoComplete} placeholder={field.placeholder} />}
+        {errors[field.name] && <p id={`${field.name}-error`} className="mt-2 text-sm text-red-700 dark:text-red-300">{errors[field.name]}</p>}
+      </div>
+    );
+  }
+
   return (
-    <form className="space-y-5" noValidate onSubmit={handleSubmit}>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className="text-sm font-semibold text-ink">
-            Name
-          </label>
-          <input type="text" autoComplete="name" {...fieldProps('name')} />
-          {errors.name && <p id="name-error" className="mt-2 text-sm text-red-700">{errors.name}</p>}
-        </div>
-        <div>
-          <label htmlFor="email" className="text-sm font-semibold text-ink">
-            Email
-          </label>
-          <input type="email" autoComplete="email" {...fieldProps('email')} />
-          {errors.email && <p id="email-error" className="mt-2 text-sm text-red-700">{errors.email}</p>}
-        </div>
+    <form className="space-y-3.5" aria-labelledby="contact-form-title" aria-busy={status === 'submitting'} noValidate onSubmit={handleSubmit}>
+      <div className="mb-5 space-y-1.5">
+        <h3 id="contact-form-title" className="text-xl font-semibold tracking-tight text-ink">Send a message</h3>
+        <p className="text-sm leading-6 text-muted">Use your email address so I can reply.</p>
       </div>
-      <div>
-        <label htmlFor="subject" className="text-sm font-semibold text-ink">
-          Subject
-        </label>
-        <input type="text" {...fieldProps('subject')} />
-        {errors.subject && <p id="subject-error" className="mt-2 text-sm text-red-700">{errors.subject}</p>}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {contactFields.slice(0, 2).map(renderField)}
       </div>
-      <div>
-        <label htmlFor="message" className="text-sm font-semibold text-ink">
-          Message
-        </label>
-        <textarea rows={6} {...fieldProps('message')} />
-        {errors.message && <p id="message-error" className="mt-2 text-sm text-red-700">{errors.message}</p>}
-      </div>
+      {contactFields.slice(2).map(renderField)}
       {status === 'success' && (
         <div role="status" aria-live="polite" className="rounded-2xl bg-accent/10 px-4 py-3 text-sm text-ink">
           Message sent. Thanks for reaching out.
         </div>
       )}
       {status === 'error' && (
-        <div role="status" aria-live="polite" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-800">
-          <span>Could not send your message. Please try again.</span>
-          <Button type="button" variant="muted" className="px-3 py-2 text-xs" onClick={() => void submitForm()}>
-            Try again
-          </Button>
+        <div role="status" aria-live="polite" className="space-y-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
+          <p>
+            {sendError?.category === 'rate-limit'
+              ? 'Too many requests. Please wait a moment before trying again.'
+              : sendError?.retryable === false
+                ? 'The contact service is currently unavailable. Please contact me on LinkedIn instead.'
+                : 'Could not send your message. Please check your connection and try again.'}
+          </p>
+          <div className="flex flex-wrap items-center gap-4">
+            {sendError?.retryable !== false && (
+              <Button type="button" variant="muted" className="px-3 py-2 text-xs" onClick={() => void submitForm()}>
+                Try again
+              </Button>
+            )}
+            {linkedin && <a href={linkedin.url} target="_blank" rel="noreferrer" className="font-semibold underline underline-offset-4">Contact me on LinkedIn</a>}
+          </div>
         </div>
       )}
-      <Button type="submit" disabled={status === 'submitting'}>
+      <Button type="submit" className="group min-h-12 w-full gap-2" disabled={status === 'submitting'}>
         {status === 'submitting' ? 'Sending…' : 'Send message'}
+        {status === 'submitting'
+          ? <LoaderCircle size={18} aria-hidden="true" className="motion-safe:animate-spin" />
+          : <ArrowUpRight size={18} aria-hidden="true" className="motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5" />}
       </Button>
     </form>
   );

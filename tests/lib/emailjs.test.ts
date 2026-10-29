@@ -35,4 +35,22 @@ describe('sendContactMessage', () => {
     ).rejects.toThrow('Contact service is not configured.');
     expect(send).not.toHaveBeenCalled();
   });
+
+  it.each([
+    [{ status: 429, text: 'sensitive provider details' }, 'rate-limit', true],
+    [{ status: 403, text: 'sensitive provider details' }, 'service', false],
+    [{ status: 400, text: 'sensitive provider details' }, 'service', false],
+    [{ status: 503, text: 'sensitive provider details' }, 'service', true],
+    [new TypeError('Failed to fetch'), 'network', true],
+  ])('normalizes provider errors without exposing raw details', async (error, category, retryable) => {
+    vi.mocked(send).mockRejectedValueOnce(error);
+    await expect(sendContactMessage({ name: 'A', email: 'a@example.com', subject: 'Hello', message: 'Hi' }))
+      .rejects.toMatchObject({ category, retryable });
+  });
+
+  it('classifies missing configuration as non-retryable', async () => {
+    vi.stubEnv('NEXT_PUBLIC_EMAILJS_SERVICE_ID', '');
+    await expect(sendContactMessage({ name: 'A', email: 'a@example.com', subject: 'Hello', message: 'Hi' }))
+      .rejects.toMatchObject({ category: 'configuration', retryable: false });
+  });
 });

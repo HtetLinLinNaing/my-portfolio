@@ -11,8 +11,8 @@ describe('portfolio data', () => {
 
   it('contains the confirmed social profiles', () => {
     expect(socials.map((social) => social.url)).toEqual([
-      'https://github.com/HtetLinLinNaing',
       'https://www.linkedin.com/in/htetlinlinnaing/',
+      'https://github.com/HtetLinLinNaing',
     ]);
   });
 

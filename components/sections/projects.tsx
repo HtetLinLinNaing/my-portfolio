@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react';
 import { projects } from '@/data/projects';
 import { Reveal } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
@@ -6,59 +7,60 @@ import type { Project } from '@/lib/types';
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <Reveal
-      delay={index * 0.08}
-      className="group grid gap-6 rounded-3xl border border-border bg-surface p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[1fr_auto] lg:items-center lg:p-8"
-    >
-      <div className="space-y-5">
-        <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-accent">
-            {project.featured ? 'Featured project' : 'Project'}
-          </p>
-          <h3 className="text-2xl font-semibold text-ink sm:text-3xl">{project.title}</h3>
-          <p className="max-w-2xl leading-7 text-muted">{project.description}</p>
+    <Reveal delay={index * 0.06}>
+      <article className="overflow-hidden rounded-2xl border border-border bg-surface">
+        <div className="space-y-6 p-6 sm:p-8">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-start">
+            <div className="max-w-2xl space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Personal project · AI application</p>
+              <h3 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{project.title}</h3>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              {project.liveUrl && <Button href={project.liveUrl} target="_blank" rel="noreferrer" variant="outline">Live demo <ArrowUpRight size={16} className="ml-2" aria-hidden="true" /></Button>}
+              {project.githubUrl && <Button href={project.githubUrl} target="_blank" rel="noreferrer" variant="outline">GitHub</Button>}
+            </div>
+          </div>
+          <p className="leading-7 text-muted">{project.description}</p>
+          <ul className="flex flex-wrap gap-2" aria-label={`${project.title} technologies`}>
+            {project.techStack.map((technology) => <li key={technology} className="rounded-md bg-background px-3 py-1.5 text-xs font-medium text-muted">{technology}</li>)}
+          </ul>
+          <div className="grid gap-6 border-t border-border pt-7 md:grid-cols-3 md:gap-8">
+            {[
+              { title: 'The problem', text: project.problem },
+              { title: 'My contribution', text: project.contribution },
+              { title: 'Implementation', text: project.implementation },
+            ].filter((item) => item.text).map((item) => (
+              <div key={item.title}><h4 className="text-sm font-semibold text-ink">{item.title}</h4><p className="mt-3 text-sm leading-7 text-muted">{item.text}</p></div>
+            ))}
+          </div>
         </div>
-        <ul className="flex flex-wrap gap-2" aria-label={`${project.title} technologies`}>
-          {project.techStack.map((technology) => (
-            <li key={technology} className="rounded-full bg-background px-3 py-1.5 text-sm text-muted">
-              {technology}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex flex-wrap gap-3 lg:justify-end">
-        {project.liveUrl && (
-          <Button href={project.liveUrl} target="_blank" rel="noreferrer">
-            Live demo
-          </Button>
+        {project.youtubeVideoId && (
+          <div className="border-t border-border bg-background p-3 sm:p-6">
+            <iframe
+              src={`https://www.youtube.com/embed/${project.youtubeVideoId}?playsinline=1`}
+              title={`${project.title} video demonstration`}
+              loading="lazy"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="aspect-video min-h-50 w-full rounded-lg border border-border"
+            />
+            <a href={`https://www.youtube.com/watch?v=${project.youtubeVideoId}`} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-accent underline underline-offset-4">
+              Watch on YouTube <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+          </div>
         )}
-        {project.githubUrl && (
-          <Button href={project.githubUrl} target="_blank" rel="noreferrer" variant="outline">
-            GitHub
-          </Button>
-        )}
-      </div>
+      </article>
     </Reveal>
   );
 }
 
 export function Projects() {
   return (
-    <section id="projects" aria-labelledby="projects-title" className="bg-surface px-5 py-20 lg:px-8 lg:py-28">
-      <div className="mx-auto max-w-6xl space-y-12">
-        <Reveal>
-          <SectionHeading
-            id="projects-title"
-            eyebrow="Selected work"
-            title="A closer look at what I build."
-            description="One featured project for now, with room to grow as new work is ready to share."
-          />
-        </Reveal>
-        <div className="space-y-6">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
+    <section id="projects" aria-labelledby="projects-title" className="px-5 py-12 sm:px-8 sm:py-14">
+      <div className="mx-auto max-w-6xl space-y-7">
+        <Reveal duration={0.35} distance={8}><SectionHeading id="projects-title" eyebrow="Selected work" title="A closer look at what I build." description="Explore the application and watch the walkthrough." /></Reveal>
+        {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
       </div>
     </section>
   );
