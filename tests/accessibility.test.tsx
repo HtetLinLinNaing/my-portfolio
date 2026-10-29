@@ -9,7 +9,8 @@ describe('portfolio accessibility and metadata', () => {
   it('exposes the expected root metadata and crawl routes', () => {
     expect(metadata.title).toBe('Htet Lin Lin Naing');
     expect(metadata.description).toMatch(/Full Stack Developer/);
-    expect(metadata.openGraph).toMatchObject({ type: 'website', images: ['/images/profile.jpg'] });
+    expect(metadata.openGraph).toMatchObject({ type: 'website' });
+    expect(metadata.openGraph).not.toHaveProperty('images');
     expect(sitemap()[0]).toMatchObject({ url: expect.any(String) });
     expect(robots()).toMatchObject({ rules: { userAgent: '*', allow: '/' }, sitemap: expect.stringContaining('/sitemap.xml') });
   });
