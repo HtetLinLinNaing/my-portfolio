@@ -37,7 +37,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     company: 'Kopwar',
-    logo: { src: '/images/pw_logo.jfif', width: 200, height: 200 },
+    logo: { src: '/images/pw_logo.jpg', width: 200, height: 200 },
     role: 'Backend Developer (Golang)',
     period: 'May 2022 – October 2022',
     summary:
