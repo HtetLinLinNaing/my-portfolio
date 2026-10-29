@@ -10,7 +10,9 @@ describe('portfolio accessibility and metadata', () => {
     expect(metadata.title).toBe('Htet Lin Lin Naing');
     expect(metadata.description).toMatch(/Full Stack Developer/);
     expect(metadata.openGraph).toMatchObject({ type: 'website' });
-    expect(metadata.openGraph).not.toHaveProperty('images');
+    expect(metadata.openGraph).toMatchObject({
+      images: [{ url: '/images/portfolio-preview.png', width: 1667, height: 745 }],
+    });
     expect(sitemap()[0]).toMatchObject({ url: expect.any(String) });
     expect(robots()).toMatchObject({ rules: { userAgent: '*', allow: '/' }, sitemap: expect.stringContaining('/sitemap.xml') });
   });
