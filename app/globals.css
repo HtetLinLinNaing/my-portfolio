@@ -1,14 +1,32 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url('/fonts/manrope-latin.woff2') format('woff2');
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --portfolio-accent: #4c78ca;
+  --portfolio-accent: #365fa8;
   --portfolio-background: #f8fafc;
   --portfolio-surface: #ffffff;
   --portfolio-text: #172033;
   --portfolio-muted: #5a6780;
   --portfolio-border: #dce4f0;
+  --hero-name-blue: #234e8c;
+  --hero-name-violet: #7041a5;
 }
 
 @theme inline {
@@ -26,6 +44,11 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -33,15 +56,89 @@ body {
   margin: 0;
   background: var(--portfolio-background);
   color: var(--portfolio-text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
-:where(.dark) {
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Manrope', 'Inter', Arial, sans-serif;
+}
+
+main p:not(.uppercase) {
+  text-align: justify;
+  text-align-last: start;
+  text-justify: inter-word;
+}
+
+main p.hero-role {
+  text-align: start;
+}
+
+.social-profile-link:is(:hover, :focus-visible) {
+  color: var(--portfolio-accent);
+  background: color-mix(in srgb, var(--portfolio-accent) 14%, var(--portfolio-background));
+  border-color: color-mix(in srgb, var(--portfolio-accent) 45%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--portfolio-accent) 18%, transparent);
+}
+
+.social-dock .social-profile-link:is(:hover, :focus-visible) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .social-profile-link {
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .social-profile-link svg {
+    transition: transform 180ms ease;
+  }
+
+  .social-profile-link:is(:hover, :focus-visible) svg {
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  /* Keep link hit areas stationary while the Dock icons magnify. */
+  .social-dock .social-profile-link svg {
+    transform-origin: left center;
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .social-dock .social-profile-link:has(+ .social-profile-link:is(:hover, :focus-visible)) svg,
+  .social-dock .social-profile-link:is(:hover, :focus-visible) + .social-profile-link svg {
+    transform: translateX(2px) scale(1.15);
+  }
+
+  .social-dock .social-profile-link:is(:hover, :focus-visible) svg {
+    transform: translateX(4px) scale(1.5);
+  }
+}
+
+:root.dark {
+  --portfolio-accent: #8aace6;
   --portfolio-background: #0a0f1c;
   --portfolio-surface: #111a2b;
   --portfolio-text: #f8fafc;
   --portfolio-muted: #aab7ce;
   --portfolio-border: #263653;
+  --hero-name-blue: #b3cdff;
+  --hero-name-violet: #d3b9ff;
+}
+
+.hero-name {
+  background-image: linear-gradient(110deg, var(--portfolio-text), var(--hero-name-blue) 25%, var(--hero-name-violet) 50%, var(--hero-name-blue) 75%, var(--portfolio-text));
+  background-size: 100% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@media (forced-colors: active) {
+  .hero-name {
+    background: none;
+    color: CanvasText;
+  }
 }
 
 :focus-visible {
@@ -53,17 +150,84 @@ section {
   scroll-margin-top: 6rem;
 }
 
+@keyframes portrait-orbit {
+  to { transform: rotate(360deg); }
+}
+
+.nav-wordmark-letter {
+  background: linear-gradient(120deg, var(--hero-name-blue), var(--hero-name-violet));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@media (forced-colors: active) {
+  .nav-wordmark-letter { background: none; color: LinkText; }
+}
+
+@keyframes wordmark-idle-dance {
+  0%, 8%, 100% { transform: translateY(0) rotate(0deg); }
+  2.4% { transform: translateY(-5px) rotate(-7deg); }
+  4.4% { transform: translateY(2px) rotate(5deg); }
+  6.24% { transform: translateY(-2px) rotate(-2deg); }
+}
+
+@keyframes wordmark-dance {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-6px) rotate(-8deg); }
+  55% { transform: translateY(2px) rotate(6deg); }
+  78% { transform: translateY(-2px) rotate(-3deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-wordmark-letter {
+    transform-origin: center bottom;
+    animation: wordmark-idle-dance 10s ease-in-out 250ms infinite both;
+  }
+
+  .nav-wordmark:is(:hover, :focus-visible) .nav-wordmark-letter {
+    animation: wordmark-dance 800ms ease-in-out both;
+  }
+
+  .nav-wordmark-letter:nth-child(2) { animation-delay: 310ms; }
+  .nav-wordmark-letter:nth-child(3) { animation-delay: 370ms; }
+  .nav-wordmark-letter:nth-child(4) { animation-delay: 430ms; }
+  .nav-wordmark:is(:hover, :focus-visible) .nav-wordmark-letter:nth-child(2) { animation-delay: 60ms; }
+  .nav-wordmark:is(:hover, :focus-visible) .nav-wordmark-letter:nth-child(3) { animation-delay: 120ms; }
+  .nav-wordmark:is(:hover, :focus-visible) .nav-wordmark-letter:nth-child(4) { animation-delay: 180ms; }
+
+  .nav-wordmark[data-motion-paused='true'] .nav-wordmark-letter {
+    animation-play-state: paused;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
+    --portfolio-accent: #8aace6;
     --portfolio-background: #0a0f1c;
     --portfolio-surface: #111a2b;
     --portfolio-text: #f8fafc;
     --portfolio-muted: #aab7ce;
     --portfolio-border: #263653;
+    --hero-name-blue: #b3cdff;
+    --hero-name-violet: #d3b9ff;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animated-text [data-motion-token], .portfolio-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .experience-timeline-fill {
+    transform: scaleY(1) !important;
+  }
+
+  .experience-timeline-dot {
+    display: none;
+  }
+
   html {
     scroll-behavior: auto;
   }

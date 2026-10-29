@@ -7,7 +7,7 @@ import robots from '@/app/robots';
 
 describe('portfolio accessibility and metadata', () => {
   it('exposes the expected root metadata and crawl routes', () => {
-    expect(metadata.title).toBe('Htet Lin Lin Naing | Full Stack Developer');
+    expect(metadata.title).toBe('Htet Lin Lin Naing');
     expect(metadata.description).toMatch(/Full Stack Developer/);
     expect(metadata.openGraph).toMatchObject({ type: 'website', images: ['/images/profile.jpg'] });
     expect(sitemap()[0]).toMatchObject({ url: expect.any(String) });
@@ -21,7 +21,7 @@ describe('portfolio accessibility and metadata', () => {
     expect(screen.getByRole('region', { name: /closer look at what i build/i })).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /let’s build something useful/i })).toBeInTheDocument();
     expect(screen.getByLabelText('Name')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Your email')).toBeInTheDocument();
     expect(screen.getByLabelText('Subject')).toBeInTheDocument();
     expect(screen.getByLabelText('Message')).toBeInTheDocument();
   });
