@@ -103,7 +103,7 @@ export function ContactForm() {
       'aria-invalid': Boolean(errors[field]),
       'aria-describedby': errors[field] ? `${field}-error` : undefined,
       className:
-        'mt-1.5 w-full min-w-0 rounded-lg border border-border bg-background/70 px-3.5 py-2.5 text-base text-ink outline-none placeholder:text-muted hover:border-accent/50 focus:border-accent focus:bg-surface focus:ring-3 focus:ring-accent/15 aria-invalid:border-red-600 aria-invalid:focus:ring-red-600/15 motion-safe:transition-colors motion-safe:duration-200 disabled:cursor-wait disabled:opacity-70',
+        'mt-1 w-full min-w-0 rounded-lg border border-border bg-background/70 px-3 py-2 text-base text-ink outline-none placeholder:text-[13px] placeholder:font-normal placeholder:text-muted/70 hover:border-accent/40 focus:border-accent focus:bg-surface focus:ring-3 focus:ring-accent/10 aria-invalid:border-red-600 aria-invalid:focus:ring-red-600/15 motion-safe:transition-colors motion-safe:duration-200 disabled:cursor-wait disabled:opacity-70',
     };
   }
 
@@ -111,9 +111,9 @@ export function ContactForm() {
     const props = fieldProps(field.name);
     return (
       <div key={field.name}>
-        <label htmlFor={field.name} className="text-sm font-semibold text-ink">{field.label}</label>
+        <label htmlFor={field.name} className="block text-xs font-semibold leading-4 text-ink">{field.label}</label>
         {field.type === 'textarea'
-          ? <textarea {...props} rows={4} placeholder={field.placeholder} className={`${props.className} min-h-32 resize-y`} />
+          ? <textarea {...props} rows={3} placeholder={field.placeholder} className={`${props.className} block min-h-24 resize-y`} />
           : <input {...props} type={field.type} autoComplete={field.autoComplete} placeholder={field.placeholder} />}
         {errors[field.name] && <p id={`${field.name}-error`} className="mt-2 text-sm text-red-700 dark:text-red-300">{errors[field.name]}</p>}
       </div>
@@ -121,12 +121,12 @@ export function ContactForm() {
   }
 
   return (
-    <form className="space-y-3.5" aria-labelledby="contact-form-title" aria-busy={status === 'submitting'} noValidate onSubmit={handleSubmit}>
-      <div className="mb-5 space-y-1.5">
-        <h3 id="contact-form-title" className="text-xl font-semibold tracking-tight text-ink">Send a message</h3>
-        <p className="text-sm leading-6 text-muted">Use your email address so I can reply.</p>
+    <form className="space-y-2.5" aria-labelledby="contact-form-title" aria-busy={status === 'submitting'} noValidate onSubmit={handleSubmit}>
+      <div className="mb-3 space-y-1">
+        <h3 id="contact-form-title" className="text-lg font-semibold tracking-tight text-ink">Send a message</h3>
+        <p className="text-xs leading-5 text-muted">Use your email address so I can reply.</p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
         {contactFields.slice(0, 2).map(renderField)}
       </div>
       {contactFields.slice(2).map(renderField)}
@@ -154,7 +154,7 @@ export function ContactForm() {
           </div>
         </div>
       )}
-      <Button type="submit" className="group min-h-12 w-full gap-2" disabled={status === 'submitting'}>
+      <Button type="submit" className="group min-h-11 w-full gap-2 text-sm" disabled={status === 'submitting'}>
         {status === 'submitting' ? 'Sending…' : 'Send message'}
         {status === 'submitting'
           ? <LoaderCircle size={18} aria-hidden="true" className="motion-safe:animate-spin" />

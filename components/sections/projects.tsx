@@ -57,8 +57,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export function Projects() {
   return (
-    <section id="projects" aria-labelledby="projects-title" className="px-5 py-12 sm:px-8 sm:py-14">
-      <div className="mx-auto max-w-6xl space-y-7">
+    <section id="projects" aria-labelledby="projects-title" className="portfolio-section px-5 sm:px-8">
+      <div className="portfolio-shell space-y-6">
         <Reveal duration={0.35} distance={8}><SectionHeading id="projects-title" eyebrow="Selected work" title="A closer look at what I build." description="Explore the application and watch the walkthrough." /></Reveal>
         {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
       </div>

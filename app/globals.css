@@ -63,14 +63,21 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Manrope', 'Inter', Arial, sans-serif;
 }
 
-main p:not(.uppercase) {
+.portfolio-shell {
+  width: 100%;
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+.portfolio-section {
+  padding-block-start: clamp(1.5rem, 2vw, 2rem);
+  padding-block-end: clamp(2rem, 3vw, 2.5rem);
+}
+
+main section p:not(.uppercase):not(.hero-role) {
   text-align: justify;
   text-align-last: start;
   text-justify: inter-word;
-}
-
-main p.hero-role {
-  text-align: start;
 }
 
 .social-profile-link:is(:hover, :focus-visible) {
