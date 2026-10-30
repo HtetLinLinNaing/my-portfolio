@@ -6,8 +6,8 @@ import { AnimatedText } from '@/components/motion/animated-text';
 
 export function Hero() {
   return (
-    <section id="hero" aria-labelledby="hero-title" className="relative overflow-hidden border-b border-border px-5 py-10 sm:px-8 sm:py-14 lg:py-16">
-      <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12">
+    <section id="hero" aria-labelledby="hero-title" className="portfolio-section relative overflow-hidden border-b border-border px-5 sm:px-8">
+      <div className="portfolio-shell grid items-center gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12">
         <div className="min-w-0 space-y-6">
           <div className="space-y-4">
             <h1 id="hero-title" className="whitespace-nowrap text-[clamp(1.6rem,4.6vw,3.8rem)] font-semibold leading-tight tracking-tight text-ink"><AnimatedText text="Htet Lin Lin Naing" tokenClassName="hero-name" /></h1>

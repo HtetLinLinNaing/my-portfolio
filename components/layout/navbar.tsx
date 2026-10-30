@@ -31,7 +31,7 @@ export function Navbar({ links }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 px-5 backdrop-blur sm:px-8">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
+      <div className="portfolio-shell flex items-center justify-between gap-4 py-4">
         <a href="#hero" aria-label="Htet — back to top" data-motion-paused={!isPageVisible} onClick={() => setIsOpen(false)} className="nav-wordmark relative inline-flex min-h-11 items-center font-heading text-2xl font-bold tracking-tight text-accent">
           <span aria-hidden="true" className="inline-flex">
             {Array.from('Htet').map((letter, index) => <span key={index} className="nav-wordmark-letter inline-block">{letter}</span>)}
@@ -63,7 +63,7 @@ export function Navbar({ links }: NavbarProps) {
 
       {isOpen && (
         <nav id="mobile-navigation" aria-label="Mobile navigation" className="border-t border-border/70 py-4 md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-4">
+          <div className="portfolio-shell flex flex-col gap-4">
             {links.map((link) => (
               <a
                 key={link.href}

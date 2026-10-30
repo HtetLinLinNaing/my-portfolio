@@ -6,8 +6,8 @@ import { ExperienceTimeline } from '@/components/motion/experience-timeline';
 
 export function Experience() {
   return (
-    <section id="experience" aria-labelledby="experience-title" className="border-t border-border px-5 py-12 sm:px-8 sm:py-14">
-      <div className="mx-auto max-w-6xl space-y-7">
+    <section id="experience" aria-labelledby="experience-title" className="portfolio-section border-t border-border px-5 sm:px-8">
+      <div className="portfolio-shell space-y-6">
         <Reveal duration={0.35} distance={8}>
           <SectionHeading id="experience-title" eyebrow="Experience" title="Practical experience from idea to production." className="max-w-none" />
         </Reveal>
